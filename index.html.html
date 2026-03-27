@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ANDRAGON Empire — Рефанди та тарифи</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+:root{
+  --bg: #05070a; 
+  --surface: rgba(255, 255, 255, 0.02);
+  --border-light: rgba(169, 181, 194, 0.15); 
+  --border-strong: rgba(169, 181, 194, 0.3);
+  --text: #ffffff;
+  --text-muted: #8b95a5; 
+  --steel: #a9b5c2; 
+  --blue: #0055ff; 
+  --blue-glow: rgba(0, 85, 255, 0.4);
+}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;overflow-x:hidden;cursor:auto}
+
+/* BG */
+.bg-wrap{position:fixed;inset:0;z-index:0;overflow:hidden;background:var(--bg)}
+.bg-flow{
+  position:absolute;inset:-50%;width:200%;height:200%;
+  background:
+    radial-gradient(ellipse 60% 50% at 20% 30%, rgba(0, 85, 255, 0.05) 0%, transparent 55%),
+    radial-gradient(ellipse 60% 50% at 80% 70%, rgba(169, 181, 194, 0.03) 0%, transparent 55%);
+  animation:bgDrift 25s ease-in-out infinite alternate;
+}
+@keyframes bgDrift{
+  0%{transform:translate(0,0) rotate(0deg) scale(1)}
+  100%{transform:translate(2%,2%) rotate(1deg) scale(1.02)}
+}
+.bg-orb{
+  position:absolute;border-radius:50%;pointer-events:none;filter:blur(90px);animation:orbFloat 20s ease-in-out infinite alternate;
+}
+.bg-orb.o1{width:600px;height:600px;left:-100px;top:10%;background:rgba(0, 85, 255, 0.03);}
+.bg-orb.o2{width:500px;height:500px;right:-100px;bottom:10%;background:rgba(169, 181, 194, 0.02);}
+@keyframes orbFloat{0%{transform:translateY(0)}100%{transform:translateY(-40px)}}
+
+/* SHIMMER TOP */
+.shimmer{
+  position:fixed;top:0;left:0;right:0;height:1px;z-index:100;
+  background:linear-gradient(90deg,transparent,rgba(0, 85, 255, 0.8) 40%,rgba(169, 181, 194, 0.5) 60%,transparent);
+  background-size:300% 100%;animation:shimmerMove 6s linear infinite;
+}
+@keyframes shimmerMove{0%{background-position:-100% 0}100%{background-position:300% 0}}
+
+.wrap{position:relative;z-index:10}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:20px 64px;
+  background:rgba(5, 7, 10, 0.5);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  border-bottom:1px solid rgba(255,255,255,0.03);transition:all .4s;
+}
+nav.scrolled{padding:14px 64px;background:rgba(5, 7, 10, 0.9);border-bottom-color:var(--border-light)}
+.nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none}
+/* Оновлено розміри логотипу в навігації */
+.nav-logo img{height:40px;width:auto;object-fit:contain}
+.nav-brand{font-family:'Montserrat',sans-serif;font-weight:800;font-size:15px;letter-spacing:4px;color:#fff;text-transform:uppercase}
+nav ul{display:flex;gap:36px;list-style:none}
+nav ul a{color:var(--text-muted);text-decoration:none;font-size:12px;font-weight:500;letter-spacing:1px;text-transform:uppercase;transition:color .3s;position:relative;padding-bottom:2px}
+nav ul a::after{content:'';position:absolute;bottom:0;left:0;width:0;height:1px;background:var(--blue);transition:width .3s ease}
+nav ul a:hover{color:#fff}
+nav ul a:hover::after{width:100%}
+.nav-cta{
+  color:#fff!important;border:1px solid var(--border-strong)!important;
+  padding:8px 20px!important;border-radius:100px;transition:all .3s!important;
+}
+.nav-cta::after{display:none!important}
+.nav-cta:hover{border-color:var(--blue)!important;background:rgba(0, 85, 255, 0.1)!important;box-shadow:0 0 15px rgba(0, 85, 255, 0.2)!important}
+
+/* HAMBURGER */
+.nav-hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px;z-index:300}
+.nav-hamburger span{display:block;width:22px;height:1.5px;background:#fff;transition:all .35s cubic-bezier(.16,1,.3,1)}
+.nav-hamburger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+.nav-hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+.nav-hamburger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+
+/* MOBILE MENU */
+.mobile-menu{
+  position:fixed;inset:0;z-index:250;
+  background:rgba(5, 7, 10, 0.98);backdrop-filter:blur(32px);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;
+  opacity:0;pointer-events:none;transition:opacity .4s cubic-bezier(.16,1,.3,1);
+}
+.mobile-menu.open{opacity:1;pointer-events:all}
+.mobile-menu a{
+  font-family:'Montserrat',sans-serif;font-weight:800;
+  font-size:clamp(28px,6vw,48px);letter-spacing:1px;
+  text-transform:uppercase;text-decoration:none;
+  color:var(--text-muted);transition:all .3s;line-height:1.2;
+}
+.mobile-menu a:hover{color:#fff;text-shadow:0 0 30px rgba(0, 85, 255, 0.5)}
+.mobile-menu .m-sep{width:40px;height:1px;background:var(--border-light);margin:16px 0}
+.mobile-menu .m-tg{
+  font-size:12px;letter-spacing:3px;color:#fff;
+  border:1px solid var(--border-strong);padding:14px 36px;border-radius:100px;margin-top:16px;
+}
+.mobile-menu .m-tg:hover{border-color:var(--blue);background:rgba(0, 85, 255, 0.1);box-shadow:0 0 20px rgba(0, 85, 255, 0.2)}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:120px 40px 100px;text-align:center;position:relative}
+/* Оновлено розмір головного логотипу */
+.hero-logo{width:160px;height:auto;object-fit:contain;margin-bottom:24px;opacity:0;animation:logoIn 1.2s cubic-bezier(.16,1,.3,1) .2s both;filter:drop-shadow(0 0 30px rgba(0, 85, 255, 0.3));}
+@keyframes logoIn{
+  0%{opacity:0;transform:scale(.8) translateY(20px);filter:drop-shadow(0 0 0 transparent)}
+  100%{opacity:1;transform:scale(1) translateY(0);filter:drop-shadow(0 0 30px rgba(0, 85, 255, 0.3))}
+}
+.hero-tag{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:10px;letter-spacing:4px;text-transform:uppercase;
+  color:var(--steel);border:1px solid rgba(169, 181, 194, 0.2);
+  padding:8px 24px;border-radius:100px;margin-bottom:28px;
+  background:rgba(255,255,255,0.02);backdrop-filter:blur(10px);
+  opacity:0;animation:fadeUp .8s ease .6s both;
+}
+.tag-dot{width:6px;height:6px;border-radius:50%;background:var(--blue);box-shadow:0 0 10px var(--blue);animation:blink 2s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.4}}
+h1{font-family:'Montserrat',sans-serif;font-size:clamp(48px,8vw,96px);font-weight:900;letter-spacing:-1px;line-height:1;margin-bottom:16px;opacity:0;animation:fadeUp .8s ease .8s both;text-transform:uppercase;text-shadow:0 10px 30px rgba(0,0,0,0.5)}
+.h1-sub{display:block;font-size:clamp(14px,2vw,20px);font-weight:400;letter-spacing:6px;color:var(--steel);text-transform:uppercase;margin-top:12px}
+.hero-desc{font-size:16px;color:var(--text-muted);max-width:540px;line-height:1.7;font-weight:400;margin:24px auto 48px;opacity:0;animation:fadeUp .8s ease 1s both}
+.hero-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;opacity:0;animation:fadeUp .8s ease 1.2s both}
+.btn-main{
+  background:var(--blue);color:#fff;border:none;
+  padding:16px 40px;border-radius:100px;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+  cursor:pointer;font-family:'Montserrat',sans-serif;transition:all .3s;
+  box-shadow:0 4px 20px rgba(0, 85, 255, 0.3);
+}
+.btn-main:hover{background:#0044cc;transform:translateY(-2px);box-shadow:0 8px 30px rgba(0, 85, 255, 0.5)}
+.btn-ghost{
+  background:rgba(255,255,255,0.03);color:#fff;border:1px solid var(--border-strong);
+  padding:16px 40px;border-radius:100px;font-size:13px;font-weight:600;letter-spacing:1px;text-transform:uppercase;
+  cursor:pointer;font-family:'Inter',sans-serif;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:all .3s;
+  backdrop-filter:blur(10px);
+}
+.btn-ghost:hover{background:#fff;color:#000;border-color:#fff;transform:translateY(-2px)}
+.scroll-hint{position:absolute;bottom:40px;display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--steel);font-size:9px;letter-spacing:3px;text-transform:uppercase;animation:fadeUp 1s ease 1.6s both}
+.scroll-line{width:1px;height:40px;background:linear-gradient(180deg,var(--steel) 0%,transparent 100%);animation:scrollAnim 2s ease infinite}
+@keyframes scrollAnim{0%,100%{transform:scaleY(1);opacity:.5}50%{transform:scaleY(1.3);opacity:1;transform-origin:top}}
+
+.divider{border:none;height:1px;background:linear-gradient(90deg, transparent, var(--border-light), transparent);margin:0}
+.sec{padding:120px 64px;max-width:1200px;margin:0 auto}
+.sec-label{font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--blue);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.sec-label::before{content:'';display:block;width:24px;height:1px;background:var(--blue)}
+.sec-title{font-family:'Montserrat',sans-serif;font-size:clamp(32px,5vw,56px);font-weight:800;letter-spacing:-1px;line-height:1.1;margin-bottom:16px;text-transform:uppercase}
+.sec-sub{color:var(--text-muted);font-size:15px;line-height:1.6;max-width:500px}
+
+/* PRICING REDESIGN */
+.pricing-bg{position:relative;}
+.pricing-inner{max-width:1200px;margin:0 auto;padding:120px 64px}
+.plans{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:64px;align-items:stretch;}
+
+.plan{
+  background:rgba(10, 14, 23, 0.6);
+  border:1px solid var(--border-light);
+  border-radius:24px;
+  padding:48px 40px;
+  position:relative;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  transition:all .4s cubic-bezier(.16,1,.3,1);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+}
+.plan::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg, rgba(255,255,255,0.03) 0%, transparent 100%);
+  pointer-events:none;
+}
+.plan.standard:hover{
+  border-color:var(--steel);
+  transform:translateY(-8px);
+  box-shadow:0 20px 40px rgba(0,0,0,0.5), 0 0 20px rgba(169, 181, 194, 0.1);
+}
+
+/* GOLD PLAN */
+.plan.gold{
+  background:rgba(25, 20, 5, 0.4);
+  border:1px solid rgba(212, 168, 67, 0.4);
+  z-index:2;
+}
+.plan.gold::before{
+  background:linear-gradient(180deg, rgba(212, 168, 67, 0.1) 0%, transparent 100%);
+}
+.plan.gold:hover{
+  border-color:#d4a843;
+  transform:translateY(-8px);
+  box-shadow:0 20px 40px rgba(0,0,0,0.6), 0 0 30px rgba(212, 168, 67, 0.15), inset 0 0 40px rgba(212, 168, 67, 0.05);
+}
+.plan.gold .plan-badge{
+  color:#111;
+  border-color:#d4a843;
+  background:#d4a843;
+  box-shadow:0 0 15px rgba(212, 168, 67, 0.4);
+}
+.plan.gold .plan-price{
+  text-shadow:0 0 20px rgba(212, 168, 67, 0.4);
+  color:#fff;
+}
+.plan.gold .plan-name{color:#fff;}
+.plan.gold .plan-divider{background:rgba(212, 168, 67, 0.3);}
+.plan.gold .feat-check{
+  background:rgba(212, 168, 67, 0.15);
+  color:#d4a843;
+  border:1px solid rgba(212, 168, 67, 0.4);
+  box-shadow:0 0 10px rgba(212, 168, 67, 0.2);
+}
+.plan.gold .feat-bold{font-weight:600;color:#fff}
+.plan.gold .plan-cta{
+  background:transparent;
+  color:#d4a843;
+  border:1px solid #d4a843;
+}
+.plan.gold .plan-cta:hover{
+  background:#d4a843;
+  color:#111;
+  border-color:#d4a843;
+  box-shadow:0 4px 15px rgba(212, 168, 67, 0.3);
+}
+
+/* PREMIUM PLAN */
+.plan.premium{
+  background:rgba(0, 20, 50, 0.4);
+  border:1px solid rgba(0, 85, 255, 0.5);
+  box-shadow:0 20px 40px rgba(0,0,0,0.6), inset 0 0 40px rgba(0, 85, 255, 0.05);
+  z-index:2;
+}
+.plan.premium::before{
+  background:linear-gradient(180deg, rgba(0, 85, 255, 0.15) 0%, transparent 100%);
+}
+.plan.premium:hover{
+  border-color:#0077ff;
+  transform:translateY(-8px);
+  box-shadow:0 20px 50px rgba(0,0,0,0.6), 0 0 30px rgba(0, 85, 255, 0.2), inset 0 0 40px rgba(0, 85, 255, 0.1);
+}
+
+.plan-badge{
+  display:inline-flex;align-items:center;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  border:1px solid;border-radius:100px;padding:6px 16px;width:fit-content;margin-bottom:32px;
+}
+.plan.standard .plan-badge{color:var(--steel);border-color:var(--border-strong);background:rgba(255,255,255,0.03)}
+.plan.premium .plan-badge{color:#fff;border-color:var(--blue);background:var(--blue);box-shadow:0 0 15px rgba(0,85,255,0.4)}
+
+.plan-old-price{font-size:14px;color:var(--text-muted);text-decoration:line-through;margin-bottom:4px;font-weight:500}
+.plan-price{font-family:'Montserrat',sans-serif;font-size:52px;font-weight:900;letter-spacing:-2px;line-height:1;margin-bottom:8px;color:#fff}
+.plan.premium .plan-price{text-shadow:0 0 20px rgba(0, 85, 255, 0.5)}
+
+.plan-name{font-family:'Montserrat',sans-serif;font-size:18px;font-weight:700;letter-spacing:1px;margin-bottom:24px;text-transform:uppercase;color:var(--steel)}
+.plan.premium .plan-name{color:#fff}
+
+.plan-divider{height:1px;background:var(--border-light);margin:0 0 24px 0}
+.plan.premium .plan-divider{background:rgba(0, 85, 255, 0.3)}
+
+.plan-features{display:flex;flex-direction:column;gap:14px;flex:1}
+.feat{display:flex;align-items:flex-start;gap:12px;font-size:13px;color:var(--steel);line-height:1.5;font-weight:400}
+.plan.premium .feat{color:rgba(255,255,255,0.8)}
+.feat-check{
+  width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:10px;flex-shrink:0;margin-top:1px;font-weight:bold;
+}
+.plan.standard .feat-check{background:rgba(255,255,255,0.05);color:var(--steel);border:1px solid var(--border-strong)}
+.plan.premium .feat-check{background:var(--blue);color:#fff;box-shadow:0 0 10px rgba(0,85,255,0.3)}
+
+.feat-bold{font-weight:600;color:#fff}
+
+.plan-cta{
+  margin-top:36px;padding:16px;border-radius:12px;font-size:12px;font-weight:700;letter-spacing:1px;
+  text-transform:uppercase;cursor:pointer;font-family:'Montserrat',sans-serif;border:none;
+  transition:all .3s;text-decoration:none;display:flex;align-items:center;justify-content:center;
+}
+.plan.standard .plan-cta{background:transparent;color:#fff;border:1px solid var(--border-strong)}
+.plan.standard .plan-cta:hover{background:#fff;color:#000;border-color:#fff}
+
+.plan.premium .plan-cta{background:var(--blue);color:#fff;border:1px solid var(--blue);box-shadow:0 4px 15px rgba(0,85,255,0.3)}
+.plan.premium .plan-cta:hover{background:#0044cc;box-shadow:0 8px 25px rgba(0,85,255,0.5);transform:translateY(-2px)}
+
+/* PAYMENT & GRID SECTIONS */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:48px}
+.glass-card{
+  background:rgba(10, 14, 23, 0.4);border:1px solid var(--border-light);border-radius:24px;
+  padding:48px;position:relative;overflow:hidden;transition:all .4s ease;
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+}
+.glass-card:hover{border-color:var(--steel);transform:translateY(-4px);box-shadow:0 10px 30px rgba(0,0,0,0.3)}
+
+.pay-icon{width:56px;height:56px;border-radius:16px;background:rgba(255,255,255,.03);border:1px solid var(--border-strong);display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:24px}
+.pay-name{font-family:'Montserrat',sans-serif;font-size:20px;font-weight:700;letter-spacing:0;margin-bottom:8px}
+.pay-desc{font-size:14px;color:var(--text-muted);line-height:1.6;margin-bottom:32px}
+
+.addr-block{display:flex;flex-direction:column;gap:12px}
+.addr-item{background:rgba(0,0,0,.3);border:1px solid var(--border-light);border-radius:12px;padding:16px;transition:border-color .3s}
+.addr-item:hover{border-color:var(--steel)}
+.addr-net{font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--steel);margin-bottom:8px}
+.addr-val{font-size:12px;font-family:'Courier New',monospace;color:#fff;word-break:break-all;line-height:1.4}
+.copy-row{display:flex;justify-content:flex-end;margin-top:12px}
+.copy-btn{background:transparent;border:1px solid var(--border-strong);color:var(--steel);padding:6px 16px;border-radius:100px;font-size:10px;font-weight:600;cursor:pointer;text-transform:uppercase;transition:all .2s;letter-spacing:1px}
+.copy-btn:hover{background:#fff;color:#000;border-color:#fff}
+
+.tg-btn{
+  display:flex;align-items:center;gap:16px;background:rgba(0,0,0,.3);border:1px solid var(--border-light);
+  border-radius:16px;padding:20px;text-decoration:none;color:#fff;transition:all .3s
+}
+.tg-btn:hover{border-color:var(--blue);background:rgba(0,85,255,0.05);transform:translateX(6px)}
+.tg-ico{width:44px;height:44px;border-radius:12px;background:rgba(255,255,255,.05);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.tg-label{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--steel);margin-bottom:4px}
+.tg-name{font-size:15px;font-weight:600}
+.tg-arr{margin-left:auto;color:var(--steel);transition:all .3s;font-size:18px}
+.tg-btn:hover .tg-arr{transform:translateX(4px);color:var(--blue)}
+
+/* HOW */
+.how-bg{background:#040404;border-top:1px solid var(--border-light);border-bottom:1px solid var(--border-light)}
+.how-inner{max-width:1200px;margin:0 auto;padding:110px 64px}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--border-light);border-radius:18px;overflow:hidden;margin-top:52px}
+.step{padding:44px 32px;border-right:1px solid var(--border-light);transition:all .4s;position:relative;overflow:hidden}
+.step:last-child{border-right:none}
+.step::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;transform:scaleX(0);transition:transform .4s cubic-bezier(.16,1,.3,1);transform-origin:left}
+.step:nth-child(1)::after{background:linear-gradient(90deg,#c8c8c8,transparent)}
+.step:nth-child(2)::after{background:linear-gradient(90deg,#d4a843,transparent)}
+.step:nth-child(3)::after{background:linear-gradient(90deg,#38bdf8,transparent)}
+.step:nth-child(4)::after{background:linear-gradient(90deg,rgba(255,255,255,.4),transparent)}
+.step:hover::after{transform:scaleX(1)}
+.step:hover{background:rgba(255,255,255,.025)}
+.step-n{font-family:'Montserrat',sans-serif;font-size:48px;font-weight:900;color:rgba(255,255,255,.05);line-height:1;margin-bottom:18px}
+.step-t{font-size:14px;font-weight:700;letter-spacing:-.3px;margin-bottom:8px;color:#fff;}
+.step-d{font-size:12px;color:var(--text-muted);line-height:1.65;font-weight:300}
+
+/* LINKS */
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px}
+.link-card{
+  background:rgba(10, 14, 23, 0.4);border:1px solid var(--border-light);border-radius:24px;
+  padding:40px 32px;text-decoration:none;color:#fff;display:flex;flex-direction:column;gap:20px;
+  transition:all .4s ease;
+}
+.link-card:hover{background:rgba(255,255,255,0.02);border-color:var(--blue);transform:translateY(-4px);box-shadow:0 10px 30px rgba(0,85,255,0.1)}
+.lc-tag{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--steel);border:1px solid var(--border-strong);padding:6px 16px;border-radius:100px;width:fit-content}
+.lc-icon{font-size:32px}
+.lc-title{font-family:'Montserrat',sans-serif;font-size:18px;font-weight:700;letter-spacing:0}
+.lc-desc{font-size:13px;color:var(--text-muted);line-height:1.6;flex:1}
+.lc-arr{font-size:12px;font-weight:600;color:var(--steel);display:flex;align-items:center;gap:8px;transition:all .3s;text-transform:uppercase}
+.link-card:hover .lc-arr{color:var(--blue);gap:12px}
+
+/* FOOTER */
+.footer{border-top:1px solid var(--border-light);background:rgba(5, 7, 10, 0.8)}
+.footer-in{max-width:1200px;margin:0 auto;padding:48px 64px;display:flex;align-items:center;justify-content:space-between}
+.footer-logo{display:flex;align-items:center;gap:12px}
+/* Оновлено розміри логотипу в футері */
+.footer-logo img{height:32px;width:auto;opacity:.8}
+.footer-brand{font-family:'Montserrat',sans-serif;font-weight:800;font-size:12px;letter-spacing:3px;color:var(--steel);text-transform:uppercase}
+.footer-copy{font-size:12px;color:var(--text-muted)}
+
+/* REVEAL */
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1)}
+.reveal.in{opacity:1;transform:none}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}
+
+/* RESPONSIVE */
+@media(max-width:1024px){
+  .plans{grid-template-columns:1fr;gap:32px}
+  .plan.premium{transform:none;z-index:1}
+  .plan.premium:hover{transform:translateY(-8px)}
+}
+@media(max-width:960px){
+  nav{padding:16px 24px}
+  nav ul{display:none}
+  .nav-hamburger{display:flex}
+  .sec,.pricing-inner,.how-inner,.footer-in{padding:80px 24px}
+  .hero{padding:120px 24px 80px}
+  .grid-2,.grid-3{grid-template-columns:1fr}
+  .footer-in{flex-direction:column;gap:24px;text-align:center}
+  h1{font-size:40px;letter-spacing:0}
+  
+  /* Адаптація для блоку HOW */
+  .how-inner{padding:80px 24px}
+  .steps{grid-template-columns:1fr 1fr}
+  .step{border-right:none;border-bottom:1px solid var(--border-light)}
+  .step:nth-child(odd){border-right:1px solid var(--border-light)}
+  .step:last-child,.step:nth-last-child(2):nth-child(odd){border-bottom:none}
+}
+@media(max-width:560px){
+  .steps{grid-template-columns:1fr}
+  .step{border-right:none!important;border-bottom:1px solid var(--border-light)!important}
+  .step:last-child{border-bottom:none!important}
+}
+</style>
+</head>
+<body>
+
+<div class="shimmer"></div>
+
+<div class="bg-wrap">
+  <div class="bg-flow"></div>
+  <div class="bg-orb o1"></div>
+  <div class="bg-orb o2"></div>
+</div>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#payment" onclick="closeMobile()">Оплата</a>
+  <a href="#pricing" onclick="closeMobile()">Тарифи</a>
+  <a href="#how" onclick="closeMobile()">Процес</a>
+  <div class="m-sep"></div>
+  <a href="https://t.me/andragonrs" target="_blank" class="m-tg">↗ Написати в Telegram</a>
+</div>
+
+<div class="wrap">
+
+<nav id="mainNav">
+  <a href="#" class="nav-logo">
+    <img src="image-Photoroom-(2).png" alt="ANDRAGON">
+    <span class="nav-brand">Andragon</span>
+  </a>
+  <ul>
+    <li><a href="#payment">Оплата</a></li>
+    <li><a href="#pricing">Тарифи</a></li>
+    <li><a href="#how">Процес</a></li>
+    <li><a href="https://t.me/andragonrs" target="_blank" class="nav-cta">Telegram</a></li>
+  </ul>
+  <button class="nav-hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="hero">
+  <img src="image-Photoroom-(2).png" alt="ANDRAGON" class="hero-logo">
+  <div class="hero-tag"><span class="tag-dot"></span>Andragon Empire · Офіційний сервіс</div>
+  <h1>
+    ANDRAGON<br>
+    <span class="h1-sub">Empire · Рефанди · Навчання</span>
+  </h1>
+  <p class="hero-desc">Повернення коштів та навчання заробітку — тут. Обери свій тариф, зроби оплату та почни отримувати результат вже сьогодні.</p>
+  <div class="hero-btns">
+    <button class="btn-main" onclick="document.querySelector('#pricing').scrollIntoView({behavior:'smooth'})">Ознайомитись з тарифами</button>
+    <a href="https://t.me/andragonrs" target="_blank" class="btn-ghost">Зв'язок з адміном</a>
+  </div>
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</div>
+
+<hr class="divider">
+
+<div class="pricing-bg" id="pricing">
+  <div class="pricing-inner">
+    <p class="sec-label reveal">Тарифи</p>
+    <h2 class="sec-title reveal">Обери свій рівень</h2>
+    <p class="sec-sub reveal">Три варіанти доступу — від впевненого старту до повного набору професійних інструментів.</p>
+    <div class="plans">
+
+      <div class="plan standard reveal">
+        <div class="plan-badge">Початковий</div>
+        <div class="plan-old-price">$100</div>
+        <div class="plan-price">$50</div>
+        <div class="plan-name">Silver</div>
+        <div class="plan-divider"></div>
+        <div class="plan-features">
+          <div class="feat"><div class="feat-check">✓</div><span><span class="feat-bold">TEMU / AliExpress</span> — робота з двома платформами</span></div>
+          <div class="feat"><div class="feat-check">✓</div><span>Метод купівлі акаунтів Temu 🇺🇦 — ліміт <span class="feat-bold">$150–200</span></span></div>
+          <div class="feat"><div class="feat-check">✓</div><span>Ціна 1 акаунта 100–200 грн, 10–20 замовлень</span></div>
+          <div class="feat"><div class="feat-check">✓</div><span>Temu 2.0 Apple 🇩🇪 — прийомка + акаунт, ліміт <span class="feat-bold">$500</span></span></div>
+          <div class="feat"><div class="feat-check">✓</div><span>Метод AliExpress 🇺🇦 — ліміт <span class="feat-bold">$100–200</span></span></div>
+          <div class="feat"><div class="feat-check">✓</div><span>Щоденні созвони з командою</span></div>
+          <div class="feat"><div class="feat-check">✓</div><span>Контакти людей + методи знижок у Temu</span></div>
+        </div>
+        <a href="https://t.me/andragonrs" target="_blank" class="plan-cta">Обрати Silver</a>
+      </div>
+
+      <div class="plan gold reveal d1">
+        <div class="plan-badge">Базовий</div>
+        <div class="plan-old-price">$200</div>
+        <div class="plan-price">$60</div>
+        <div class="plan-name">Gold</div>
+        <div class="plan-divider"></div>
+        <div class="plan-features">
+          <div class="feat"><div class="feat-check">✓</div><span><span class="feat-bold">Брендовий одяг, ювелірка, духи, спортхарч</span></span></div>
+          <div class="feat"><div class="feat-check">✓</div><span>Способи: <span class="feat-bold">Base</span> (базові види)</span></div>
+          <div class="feat"><div class="feat-check">✓</div><span>Всі необхідні контакти для роботи</span></div>
+          <div class="feat"><div class="feat-check">✓</div><span>Доступ у закритий чат з усіма учнями</span></div>
+          <div class="feat"><div class="feat-check">✓</div><span>Підтримка <span class="feat-bold">24/7</span> — ведемо до перших результатів</span></div>
+          <div class="feat"><div class="feat-check">✓</div><span>Навчання по відеодзвінках на практиці</span></div>
+        </div>
+        <a href="https://t.me/andragonrs" target="_blank" class="plan-cta">Обрати Gold</a>
+      </div>
+
+      <div class="plan premium reveal d2">
+        <div class="plan-badge">Преміум</div>
+        <div class="plan-old-price">$700</div>
+        <div class="plan-price">$150</div>
+        <div class="plan-name">Premium</div>
+        <div class="plan-divider"></div>
+        <div class="plan-features">
+          <div class="feat"><div class="feat-check">✓</div><span><span class="feat-bold">Техніка, люкс бренди, одяг, парфуми</span> — великі суми</span></div>
+          <div class="feat"><div class="feat-check">✓</div><span>Способи: <span class="feat-bold">Full Access</span> — всі види без обмежень</span></div>
+          <div class="feat"><div class="feat-check">✓</div><span>Всі необхідні контакти для роботи</span></div>
+          <div class="feat"><div class="feat-check">✓</div><span>Доступ у закритий VIP чат</span></div>
+          <div class="feat"><div class="feat-check">✓</div><span><span class="feat-bold">Бонус</span> — Silver тариф повністю включено</span></div>
+          <div class="feat"><div class="feat-check">✓</div><span>Пожиттєва підтримка <span class="feat-bold">24/7</span></span></div>
+          <div class="feat"><div class="feat-check">✓</div><span>Особисте ведення до стабільного результату</span></div>
+        </div>
+        <a href="https://t.me/andragonrs" target="_blank" class="plan-cta">Отримати Premium</a>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<div id="payment" class="sec">
+  <p class="sec-label reveal">Транзакції</p>
+  <h2 class="sec-title reveal">Способи оплати</h2>
+  <p class="sec-sub reveal">Ми приймаємо криптовалютні перекази для максимальної швидкості та безпеки, а також прямі оплати на картку через запит.</p>
+  <div class="grid-2">
+    <div class="glass-card reveal">
+      <div class="pay-icon">₿</div>
+      <div class="pay-name">Криптовалюта</div>
+      <p class="pay-desc">Переказуйте USDT на зручну для вас мережу. Після виконання транзакції надішліть скриншот адміністратору.</p>
+      <div class="addr-block">
+        <div class="addr-item">
+          <div class="addr-net">USDT — BSC (BEP20)</div>
+          <div class="addr-val" id="a1">0xdb6c22e995b443df72281871d73d2c8523aefbba</div>
+          <div class="copy-row"><button class="copy-btn" onclick="cp('a1',this)">Копіювати</button></div>
+        </div>
+        <div class="addr-item">
+          <div class="addr-net">USDT — TRC20</div>
+          <div class="addr-val" id="a2">TNAVxWCiswTBjS8A5LPmWoKLxPi41VkRn5</div>
+          <div class="copy-row"><button class="copy-btn" onclick="cp('a2',this)">Копіювати</button></div>
+        </div>
+      </div>
+    </div>
+    <div class="glass-card reveal d1">
+      <div class="pay-icon">💳</div>
+      <div class="pay-name">Банківська картка</div>
+      <p class="pay-desc">Оплата банківською карткою здійснюється за індивідуальними реквізитами. Зверніться до адміністратора для їх отримання.</p>
+      <div style="display:flex;flex-direction:column;gap:16px;">
+        <a href="https://t.me/andragonrs" target="_blank" class="tg-btn">
+          <div class="tg-ico">✈</div>
+          <div><div class="tg-label">Отримати реквізити</div><div class="tg-name">@andragonrs</div></div>
+          <span class="tg-arr">→</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<div class="how-bg" id="how">
+  <div class="how-inner">
+    <p class="sec-label reveal">Процес</p>
+    <h2 class="sec-title reveal">Як починається</h2>
+    <div class="steps">
+      <div class="step reveal">
+        <div class="step-n">01</div>
+        <div class="step-t">Обери тариф</div>
+        <p class="step-d">Silver, Gold або Premium — вибери відповідно до цілей.</p>
+      </div>
+      <div class="step reveal d1">
+        <div class="step-n">02</div>
+        <div class="step-t">Зроби оплату</div>
+        <p class="step-d">Крипта або картка — зручний для тебе спосіб.</p>
+      </div>
+      <div class="step reveal d2">
+        <div class="step-n">03</div>
+        <div class="step-t">Підтверди адміну</div>
+        <p class="step-d">Надішли скриншот оплати в Telegram @andragonrs.</p>
+      </div>
+      <div class="step reveal d3">
+        <div class="step-n">04</div>
+        <div class="step-t">Починаємо</div>
+        <p class="step-d">Отримуєш доступ та починаємо навчання і роботу.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<div class="sec">
+  <p class="sec-label reveal">Комунікація</p>
+  <h2 class="sec-title reveal">Наші ресурси</h2>
+  <div class="grid-3">
+    <a href="https://t.me/andragonrs" target="_blank" class="link-card reveal">
+      <div class="lc-tag">Direct</div>
+      <div class="lc-icon">👤</div>
+      <div class="lc-title">Telegram Адміністратор</div>
+      <p class="lc-desc">Ваш особистий контакт для вирішення фінансових питань та початку співпраці.</p>
+      <div class="lc-arr">Написати <span>→</span></div>
+    </a>
+    <a href="https://t.me/+lyYLUiRLYeJiYzMy" target="_blank" class="link-card reveal d1">
+      <div class="lc-tag">Media</div>
+      <div class="lc-icon">🌐</div>
+      <div class="lc-title">Офіційний Канал</div>
+      <p class="lc-desc">Слідкуйте за новинами, оновленнями платформи та реальними кейсами учнів.</p>
+      <div class="lc-arr">Перейти <span>→</span></div>
+    </a>
+    <a href="https://t.me/andragonrs" target="_blank" class="link-card reveal d2">
+      <div class="lc-tag">Support</div>
+      <div class="lc-icon">🛡</div>
+      <div class="lc-title">Служба підтримки</div>
+      <p class="lc-desc">Технічна допомога в режимі 24/7 для учасників наших навчальних програм.</p>
+      <div class="lc-arr">Звернутись <span>→</span></div>
+    </a>
+  </div>
+</div>
+
+<div class="footer">
+  <div class="footer-in">
+    <div class="footer-logo">
+      <img src="image-Photoroom-(2).png" alt="ANDRAGON">
+      <span class="footer-brand">Andragon Empire</span>
+    </div>
+    <span class="footer-copy">© 2025 ANDRAGON Empire. Всі права захищено.</span>
+  </div>
+</div>
+
+</div>
+
+<script>
+// NAV SCROLL
+const nav=document.getElementById('mainNav');
+window.addEventListener('scroll',()=>{
+  nav.classList.toggle('scrolled',window.scrollY>50);
+});
+
+// HAMBURGER
+const hamburger=document.getElementById('hamburger');
+const mobileMenu=document.getElementById('mobileMenu');
+function closeMobile(){
+  hamburger.classList.remove('open');
+  mobileMenu.classList.remove('open');
+  document.body.style.overflow='';
+}
+hamburger.addEventListener('click',()=>{
+  const isOpen=hamburger.classList.toggle('open');
+  mobileMenu.classList.toggle('open',isOpen);
+  document.body.style.overflow=isOpen?'hidden':'';
+});
+
+// REVEAL
+const obs=new IntersectionObserver(
+  entries=>entries.forEach(e=>{
+    if(e.isIntersecting){e.target.classList.add('in');obs.unobserve(e.target);}
+  }),
+  {threshold:.1}
+);
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+// COPY
+function cp(id,btn){
+  navigator.clipboard.writeText(document.getElementById(id).textContent.trim()).then(()=>{
+    const o=btn.textContent;btn.textContent='Скопійовано';btn.style.color='#fff';
+    setTimeout(()=>{btn.textContent=o;btn.style.color='';},2000);
+  });
+}
+</script>
+</body>
+</html>
